@@ -1,0 +1,19 @@
+rm -f HelloWorld.o
+rm -f Say.o
+rm -rf build/HelloWorld
+rm -rf build/HelloWorld.app
+swiftc -whole-module-optimization -num-threads 2 \
+-c HelloWorld.swift Say.swift \
+-module-name HelloWorld \
+-sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator14.2.sdk \
+-target x86_64-apple-ios14.2-simulator
+ld \
+HelloWorld.o Say.o \
+-o build/HelloWorld \
+-syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator14.2.sdk \
+-arch x86_64 \
+-L/usr/lib/swift \
+-lSystem
+mkdir build/HelloWorld.app
+cp build/HelloWorld build/HelloWorld.app/HelloWorld
+cp Info.plist build/HelloWorld.app/Info.plist
